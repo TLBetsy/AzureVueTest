@@ -1,2 +1,2 @@
-# AzureVueTest
-Betsy's Azure Vue test app
+# vue-project
+ Testing Azure and Vue
