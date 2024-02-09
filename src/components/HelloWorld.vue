@@ -1,40 +1,65 @@
-<script setup lang="ts">
-defineProps<{
-  msg: string
-}>()
-</script>
-
 <template>
-  <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project.
-
-    </h3>
+  <div class="content-container">
+    <div class="section content-title-group">
+      <h2 class="title">Welcome to the Azure AD + Storage app with Vue.js</h2>
+    </div>
+    <div v-if="account">
+      <div class="level">
+        <div class="level-item title">
+          You are logged in as {{ account.name }}
+        </div>
+      </div>
+    </div>
+    <div v-else>You need to authenticate to access your Azure Storage data</div>
   </div>
 </template>
+1`
 
+<script>
+import { mapMutations } from 'vuex';
+
+export default {
+  name: 'HelloWorld',
+  data() {
+    return {
+      account: undefined,
+      containers: [],
+    };
+  },
+  created() {
+    this.$emitter.on(
+      'login', (account) => {
+        this.account = account;
+        console.log(this.account);
+      }.bind(this),
+    ),
+    this.$emitter.on('logout', () => {
+        console.log('logging out');
+        this.account = undefined;
+      }.bind(this)
+    );
+  },
+  methods: {
+    ...mapMutations(['setAccessToken']),
+
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
-}
-
 h3 {
-  font-size: 1.2rem;
+  margin: 40px 0 0;
 }
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
+ul {
+  list-style-type: none;
+  padding: 0;
 }
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
 }
 </style>
